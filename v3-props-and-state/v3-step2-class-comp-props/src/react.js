@@ -1,20 +1,20 @@
 (() => {
-  function anElement(element, children) {
+  function anElement(element, props, children) {
     if (isClass(element)) {
-      return handleClass(element);
+      return handleClass(element, props);
     } else if (isStateLessComponent(element)) {
-      return element();
+      return element(props);
     } else {
       return handleHtmlElement(element, children);
     }
   }
 
   function createElement(el, props, ...children) {
-    return anElement(el, children);
+    return anElement(el, props, children);
   }
 
-  function handleClass(clazz) {
-    const component = new clazz();
+  function handleClass(clazz, props) {
+    const component = new clazz(props);
     return component.render();
   }
 
@@ -30,8 +30,15 @@
     return anElement;
   }
 
+  class Component {
+    constructor(props) {
+      this.props = props;
+    }
+  }
+
   window.React = {
-    createElement
+    createElement,
+    Component
   };
   window.ReactDOM = {
     render: (el, domEl) => {
