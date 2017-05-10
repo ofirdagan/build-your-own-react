@@ -4,7 +4,7 @@
       return element();
     } else {
       const anElement = document.createElement(element);
-      anElement.innerHTML = values.join('');
+      anElement.innerHTML = values.join(' ');
       return anElement;
     }
   }

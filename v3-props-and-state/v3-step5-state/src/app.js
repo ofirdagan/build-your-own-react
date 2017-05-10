@@ -15,10 +15,10 @@ class Counter extends React.Component {
 
   render() {
     return React.createElement('div', null,
-      React.createElement('div', null, `The Famous Counter`),
-      React.createElement('button', {onclick: this.onPlusClick.bind(this)}, '+'),
+      React.createElement('div', null, `The Famous Dan Abramov's Counter`),
       React.createElement('div', null, `${this.state.value}`),
-      React.createElement('button', {onclick: this.onMinusClick.bind(this)}, '-')
+      React.createElement('button', {onClick: this.onPlusClick.bind(this)}, '+'),
+      React.createElement('button', {onClick: this.onMinusClick.bind(this)}, '-')
     );
   }
 }

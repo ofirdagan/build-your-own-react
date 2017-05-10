@@ -1,5 +1,3 @@
-//https://github.com/christiannwamba/scotch-react-todo
-
 const Title = ({ todoCount }) => {
   return React.createElement(
     "div",
@@ -109,7 +107,11 @@ class TodoApp extends React.Component {
       React.createElement(TodoList, {
         todos: this.state.data,
         remove: this.handleRemove.bind(this)
-      })
+      }),
+      React.createElement('div', {className: 'author-credit'},
+        '&copy; ToDo by ',
+        React.createElement('a', {href: 'https://github.com/christiannwamba/scotch-react-todo', target: '_blank'}, 'christiannwamba')
+      )
     );
   }
 }

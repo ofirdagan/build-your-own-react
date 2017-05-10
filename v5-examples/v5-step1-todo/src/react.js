@@ -1,14 +1,10 @@
 (() => {
   let rootDOMElement, rootReactElement;
+  const REACT_CLASS = 'REACT_CLASS';
 
   function anElement(element, props, children) {
-    let reactElement;
-
     if (isClass(element)) {
-      reactElement = new element(props);
-      reactElement.children = children;
-      reactElement.type = 'react';
-      return reactElement;
+      return handleClass(element, props, children)
     } else if (isStateLessComponent(element)) {
       return element(props);
     } else {
@@ -18,6 +14,13 @@
 
   function createElement(el, props, ...children) {
     return anElement(el, props, children);
+  }
+
+  function handleClass(clazz, props, children) {
+    const reactElement = new clazz(props);
+    reactElement.children = children;
+    reactElement.type = REACT_CLASS;
+    return reactElement;
   }
 
   function handleHtmlElement(element, props, children) {
@@ -31,7 +34,7 @@
   }
 
   function appendChild(element, child) {
-    if (child.type === 'react') {
+    if (child.type === REACT_CLASS) {
       appendChild(element, child.render());
     } else if (Array.isArray(child)) {
       child.forEach(ch => appendChild(element, ch));
@@ -65,6 +68,9 @@
   }
 
   function reRender() {
+    while (rootDOMElement.hasChildNodes()) {
+      rootDOMElement.removeChild(rootDOMElement.lastChild);
+    }
     ReactDOM.render(rootReactElement, rootDOMElement);
   }
 
@@ -76,10 +82,7 @@
     render: (el, domEl) => {
       rootReactElement = el;
       rootDOMElement = domEl;
-      while (rootDOMElement.hasChildNodes()) {
-        rootDOMElement.removeChild(rootDOMElement.lastChild);
-      }
-      const currentDOM = rootReactElement.render();
+      const currentDOM = rootReactElement.type === REACT_CLASS ? rootReactElement.render() : rootReactElement;
       rootDOMElement.appendChild(currentDOM);
     }
   };

@@ -29,7 +29,7 @@
     });
     Object.keys(props).forEach(propName => {
       if (/^on.*$/.test(propName)) {
-        anElement.addEventListener(propName.substring(2), props[propName]);
+        anElement.addEventListener(propName.substring(2).toLowerCase(), props[propName]);
       } else {
         anElement.setAttribute(propName, props[propName]);
       }

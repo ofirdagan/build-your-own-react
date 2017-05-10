@@ -1,3 +1,4 @@
 # Changelog
 
-* handle className attribute
+* Handle className attribute
+* Support stateless component as the root react element

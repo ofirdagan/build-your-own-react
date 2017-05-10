@@ -1,14 +1,10 @@
 (() => {
   let rootDOMElement, rootReactElement;
+  const REACT_CLASS = 'REACT_CLASS';
 
   function anElement(element, props, children) {
-    let reactElement;
-
     if (isClass(element)) {
-      reactElement = new element(props);
-      reactElement.children = children;
-      reactElement.type = 'react';
-      return reactElement;
+      return handleClass(element, props, children)
     } else if (isStateLessComponent(element)) {
       return element(props);
     } else {
@@ -20,6 +16,13 @@
     return anElement(el, props, children);
   }
 
+  function handleClass(clazz, props, children) {
+    const reactElement = new clazz(props);
+    reactElement.children = children;
+    reactElement.type = REACT_CLASS;
+    return reactElement;
+  }
+
   function handleHtmlElement(element, props, children) {
     const anElement = document.createElement(element);
     children.forEach(child => appendChild(anElement, child));
@@ -28,9 +31,6 @@
   }
 
   function appendChild(element, child) {
-    if (child.type === 'react') {
-      appendChild(element, child.render());
-    }
     if (typeof(child) === 'object') {
       element.appendChild(child);
     } else {
@@ -40,7 +40,7 @@
 
   function appendProp(element, propName, propVal) {
     if (shouldAddEventListener(propName)) {
-      element.addEventListener(propName.substring(2), propVal);
+      element.addEventListener(propName.substring(2).toLowerCase(), propVal);
     } else {
       if (propName === 'className') {
         propName = 'class';
@@ -61,6 +61,9 @@
   }
 
   function reRender() {
+    while (rootDOMElement.hasChildNodes()) {
+      rootDOMElement.removeChild(rootDOMElement.lastChild);
+    }
     ReactDOM.render(rootReactElement, rootDOMElement);
   }
 
@@ -72,10 +75,7 @@
     render: (el, domEl) => {
       rootReactElement = el;
       rootDOMElement = domEl;
-      while (rootDOMElement.hasChildNodes()) {
-        rootDOMElement.removeChild(rootDOMElement.lastChild);
-      }
-      const currentDOM = rootReactElement.type === 'react' ? rootReactElement.render() : rootReactElement;
+      const currentDOM = rootReactElement.type === REACT_CLASS ? rootReactElement.render() : rootReactElement;
       rootDOMElement.appendChild(currentDOM);
     }
   };

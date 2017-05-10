@@ -35,7 +35,7 @@
 
   function appendProp(element, propName, propVal) {
     if (shouldAddEventListener(propName)) {
-      element.addEventListener(propName.substring(2), propVal);
+      element.addEventListener(propName.substring(2).toLowerCase(), propVal);
     } else {
       element.setAttribute(propName, propVal);
     }

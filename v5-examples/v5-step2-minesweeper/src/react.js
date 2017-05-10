@@ -25,13 +25,23 @@
 
   function handleHtmlElement(element, props, children) {
     const anElement = document.createElement(element);
+    if (props && props.ref) {
+      props.ref(anElement);
+    }
     children.forEach(child => appendChild(anElement, child));
     _.forEach(props, (value, name) => appendProp(anElement, name, value));
     return anElement;
   }
 
   function appendChild(element, child) {
-    if (typeof(child) === 'object') {
+    if (!child) {
+      return;
+    }
+    if (child.type === REACT_CLASS) {
+      appendChild(element, child.render());
+    } else if (Array.isArray(child)) {
+      child.forEach(ch => appendChild(element, ch));
+    } else if (typeof(child) === 'object') {
       element.appendChild(child);
     } else {
       element.innerHTML += child;
@@ -42,13 +52,21 @@
     if (shouldAddEventListener(propName)) {
       element.addEventListener(propName.substring(2).toLowerCase(), propVal);
     } else {
+      if (propName === 'className') {
+        propName = 'class';
+      }
+      if (propName === 'style') {
+        propVal = _.reduce(propVal, (acc, value, key) => {
+          return acc.concat(`${key}:${value};`);
+        }, '');
+      }
       element.setAttribute(propName, propVal);
     }
   }
 
   class Component {
     constructor(props) {
-      this.props = props;
+      this.props = props || {};
     }
 
     setState(state) {
@@ -72,7 +90,7 @@
     render: (el, domEl) => {
       rootReactElement = el;
       rootDOMElement = domEl;
-      const currentDOM = rootReactElement.render();
+      const currentDOM = rootReactElement.type === REACT_CLASS ? rootReactElement.render() : rootReactElement;
       rootDOMElement.appendChild(currentDOM);
     }
   };

@@ -1,7 +1,7 @@
 (() => {
-  function anElement(elementName, values) {
+  function anElement(elementName, children) {
     const element = document.createElement(elementName);
-    element.innerHTML = values.join('');
+    element.innerHTML = children.join(' ');
     return element;
   }
 
