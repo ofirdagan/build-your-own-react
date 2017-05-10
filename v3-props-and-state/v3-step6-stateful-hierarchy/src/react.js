@@ -20,10 +20,9 @@
 
   function handleClass(clazz, props, children) {
     classCounter++;
-    // This naive approach doesn't work in this app.
-    // if (classMap[classCounter]) {
-    //   return classMap[classCounter];
-    // }
+    if (classMap[classCounter]) {
+      return classMap[classCounter];
+    }
     const reactElement = new clazz(props);
     reactElement.children = children;
     reactElement.type = REACT_CLASS;
@@ -33,18 +32,12 @@
 
   function handleHtmlElement(element, props, children) {
     const anElement = document.createElement(element);
-    if (props && props.ref) {
-      props.ref(anElement);
-    }
     children.forEach(child => appendChild(anElement, child));
     _.forEach(props, (value, name) => appendProp(anElement, name, value));
     return anElement;
   }
 
   function appendChild(element, child) {
-    if (!child) {
-      return;
-    }
     if (child.type === REACT_CLASS) {
       appendChild(element, child.render());
     } else if (Array.isArray(child)) {
@@ -60,21 +53,13 @@
     if (shouldAddEventListener(propName)) {
       element.addEventListener(propName.substring(2).toLowerCase(), propVal);
     } else {
-      if (propName === 'className') {
-        propName = 'class';
-      }
-      if (propName === 'style') {
-        propVal = _.reduce(propVal, (acc, value, key) => {
-          return acc.concat(`${key}:${value};`);
-        }, '');
-      }
       element.setAttribute(propName, propVal);
     }
   }
 
   class Component {
     constructor(props) {
-      this.props = props || {};
+      this.props = props;
     }
 
     setState(state) {
@@ -87,7 +72,7 @@
     while (rootDOMElement.hasChildNodes()) {
       rootDOMElement.removeChild(rootDOMElement.lastChild);
     }
-    //skip the root. it is only rendered once.
+    //Skip the root. It is only rendered once.
     classCounter = 1;
     ReactDOM.render(rootReactElement, rootDOMElement);
   }
@@ -100,7 +85,7 @@
     render: (el, domEl) => {
       rootReactElement = el;
       rootDOMElement = domEl;
-      const currentDOM = rootReactElement.type === REACT_CLASS ? rootReactElement.render() : rootReactElement;
+      const currentDOM = rootReactElement.render();
       rootDOMElement.appendChild(currentDOM);
     }
   };

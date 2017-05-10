@@ -6,7 +6,7 @@
 
   function anElement(element, props, children) {
     if (isClass(element)) {
-      return handleClass(element, props, children)
+      return handleClass(element, props, children);
     } else if (isStateLessComponent(element)) {
       return element(props);
     } else {

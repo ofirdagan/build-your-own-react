@@ -1,12 +1,10 @@
 (() => {
   let rootDOMElement, rootReactElement;
-  const classMap = {};
-  let classCounter = 0;
   const REACT_CLASS = 'REACT_CLASS';
 
   function anElement(element, props, children) {
     if (isClass(element)) {
-      return handleClass(element, props, children)
+      return handleClass(element, props, children);
     } else if (isStateLessComponent(element)) {
       return element(props);
     } else {
@@ -19,14 +17,9 @@
   }
 
   function handleClass(clazz, props, children) {
-    classCounter++;
-    if (classMap[classCounter]) {
-      return classMap[classCounter];
-    }
     const reactElement = new clazz(props);
     reactElement.children = children;
     reactElement.type = REACT_CLASS;
-    classMap[classCounter] = reactElement;
     return reactElement;
   }
 
@@ -72,8 +65,6 @@
     while (rootDOMElement.hasChildNodes()) {
       rootDOMElement.removeChild(rootDOMElement.lastChild);
     }
-    //Skip the root. It is only rendered once.
-    classCounter = 1;
     ReactDOM.render(rootReactElement, rootDOMElement);
   }
 
