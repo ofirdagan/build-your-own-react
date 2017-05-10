@@ -1,5 +1,5 @@
 # Build Your Own React
-Source code for my "Build Your Own React" talk
+Source code for my "Build Your Own React" talk at [Riga Dev Days 2017](https://rigadevdays.lv/schedule/day1?sessionId=139)
 
 Checkout the [Slides](http://slides.com/ofird/build-your-own-react/)
 
