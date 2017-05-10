@@ -1,8 +1,8 @@
 (() => {
-  function anElement(elementName, children) {
-    const element = document.createElement(elementName);
-    element.innerHTML = children.join(' ');
-    return element;
+  function anElement(element, children) {
+    const anElement = document.createElement(element);
+    anElement.innerHTML = children.join(' ');
+    return anElement;
   }
 
   function createElement(el, props, ...children) {

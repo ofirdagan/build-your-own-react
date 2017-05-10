@@ -226,10 +226,13 @@ class Game extends React.Component {
   addToDisplayedSquares(row, column, value) {
     const displayedSquares = this.state.displayedSquares.slice();
     displayedSquares[row][column] = value;
-
+    var t0 = performance.now();
     this.setState({
       displayedSquares: displayedSquares
     });
+    var t1 = performance.now();
+    console.log("Call to set state displayedSquares took " + (t1 - t0) + " milliseconds.");
+
   }
 
   revealAdjacentMinesNumber(rowIndex, columnIndex) {
@@ -512,6 +515,7 @@ class MineSweeperApp extends React.Component {
     );
   }
 }
-
+var t0 = performance.now();
 ReactDOM.render(React.createElement(MineSweeperApp, null), document.getElementById('root'));
-
+var t1 = performance.now();
+console.log("Call to first render took " + (t1 - t0) + " milliseconds.");

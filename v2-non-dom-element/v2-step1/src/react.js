@@ -1,10 +1,10 @@
 (() => {
-  function anElement(element, values) {
+  function anElement(element, children) {
     if (typeof(element) === 'function') {
       return element();
     } else {
       const anElement = document.createElement(element);
-      anElement.innerHTML = values.join(' ');
+      anElement.innerHTML = children.join(' ');
       return anElement;
     }
   }

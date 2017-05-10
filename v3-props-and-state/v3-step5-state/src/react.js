@@ -1,5 +1,7 @@
 (() => {
   let rootDOMElement, rootReactElement;
+  const classMap = {};
+  let classCounter = 0;
   const REACT_CLASS = 'REACT_CLASS';
 
   function anElement(element, props, children) {
@@ -17,9 +19,14 @@
   }
 
   function handleClass(clazz, props, children) {
+    classCounter++;
+    if (classMap[classCounter]) {
+      return classMap[classCounter];
+    }
     const reactElement = new clazz(props);
     reactElement.children = children;
     reactElement.type = REACT_CLASS;
+    classMap[classCounter] = reactElement;
     return reactElement;
   }
 
@@ -31,7 +38,11 @@
   }
 
   function appendChild(element, child) {
-    if (typeof(child) === 'object') {
+    if (child.type === REACT_CLASS) {
+      appendChild(element, child.render());
+    } else if (Array.isArray(child)) {
+      child.forEach(ch => appendChild(element, ch));
+    } else if (typeof(child) === 'object') {
       element.appendChild(child);
     } else {
       element.innerHTML += child;
@@ -61,6 +72,8 @@
     while (rootDOMElement.hasChildNodes()) {
       rootDOMElement.removeChild(rootDOMElement.lastChild);
     }
+    //Skip the root. It is only rendered once.
+    classCounter = 1;
     ReactDOM.render(rootReactElement, rootDOMElement);
   }
 

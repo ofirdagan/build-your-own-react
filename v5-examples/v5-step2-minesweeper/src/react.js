@@ -1,5 +1,7 @@
 (() => {
   let rootDOMElement, rootReactElement;
+  const classMap = {};
+  let classCounter = 0;
   const REACT_CLASS = 'REACT_CLASS';
 
   function anElement(element, props, children) {
@@ -17,9 +19,15 @@
   }
 
   function handleClass(clazz, props, children) {
+    classCounter++;
+    // This naive approach doesn't work in this app.
+    // if (classMap[classCounter]) {
+    //   return classMap[classCounter];
+    // }
     const reactElement = new clazz(props);
     reactElement.children = children;
     reactElement.type = REACT_CLASS;
+    classMap[classCounter] = reactElement;
     return reactElement;
   }
 
@@ -79,6 +87,8 @@
     while (rootDOMElement.hasChildNodes()) {
       rootDOMElement.removeChild(rootDOMElement.lastChild);
     }
+    //skip the root. it is only rendered once.
+    classCounter = 1;
     ReactDOM.render(rootReactElement, rootDOMElement);
   }
 

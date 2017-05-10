@@ -24,3 +24,13 @@ class Counter extends React.Component {
 }
 const counter = React.createElement(Counter, null, null);
 ReactDOM.render(counter, document.getElementById('root'));
+
+// class Root extends React.Component {
+//   render() {
+//     return React.createElement('div', null,
+//       React.createElement(Counter, null, null),
+//       React.createElement(Counter, null, null)
+//     );
+//   }
+// }
+// ReactDOM.render(React.createElement(Root, null, null), document.getElementById('root'));
