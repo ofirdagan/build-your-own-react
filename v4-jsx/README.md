@@ -1,0 +1,3 @@
+# Changelog
+
+* handle className attribute
