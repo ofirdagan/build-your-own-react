@@ -87,7 +87,7 @@
     while (rootDOMElement.hasChildNodes()) {
       rootDOMElement.removeChild(rootDOMElement.lastChild);
     }
-    //skip the root. it is only rendered once.
+    //Skip the root. It is only rendered once.
     classCounter = 1;
     ReactDOM.render(rootReactElement, rootDOMElement);
   }
